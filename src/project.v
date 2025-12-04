@@ -5,7 +5,7 @@
 
 `default_nettype none
 
-module tt_um_example (
+module tt_um_bakemonio_sample (
     input  wire [7:0] ui_in,    // Dedicated inputs
     output wire [7:0] uo_out,   // Dedicated outputs
     input  wire [7:0] uio_in,   // IOs: Input path
@@ -16,10 +16,15 @@ module tt_um_example (
     input  wire       rst_n     // reset_n - low to reset
 );
 
+  // Pin definitions:
+  // ui_in[7:0]  : Input A (A7-A0)
+  // uio_in[7:0] : Input B (B7-B0) - bidirectional pins used as input
+  // uo_out[7:0] : Sum output (SUM7-SUM0) = A + B
+
   // All output pins must be assigned. If not used, assign to 0.
-  assign uo_out  = ui_in + uio_in;  // Example: ou_out is the sum of ui_in and uio_in
-  assign uio_out = 0;
-  assign uio_oe  = 0;
+  assign uo_out  = ui_in + uio_in;  // 8-bit adder: SUM = A + B
+  assign uio_out = 0;                // uio pins are used as input only
+  assign uio_oe  = 0;                // Set to 0 to use uio pins as input (0=input, 1=output)
 
   // List all unused inputs to prevent warnings
   wire _unused = &{ena, clk, rst_n, 1'b0};
